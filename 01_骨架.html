@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        html,body{
+            height:100%;
+            overflow:hidden;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script>
+    window.onload = function(){
+        // 禁止默认事件(因为click延迟300毫秒，会造成事件点透)
+        document.addEventListener('touchstart',function(ev){
+            ev = ev || event
+            ev.preventDefault();
+        })
+
+        // 使用rem适配
+        ;(function(){
+            var styleNode = document.createElement('style');
+            var w = document.documentElement.clientWidth/16;
+            styleNode.innerHtml = 'html{font-size:' + w + 'px!important}';
+            document.head.appendChild(styleNode);
+        })()
+    }
+</script>
+</html>

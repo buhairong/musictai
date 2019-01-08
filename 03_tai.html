@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        html,body{
+            height:100%;
+            overflow:hidden;
+        }
+        #wrap{
+            height:100%;
+            overflow:hidden;
+        }
+        #wrap .head{
+            position:absolute;
+            width:100%;
+            height:100px;
+            background:pink;
+        }
+        #wrap .head .logo img{
+            width:3.5555555555555555555555555555556rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div class="head">
+            <div class="head-top">
+                <h1 class="logo">
+                    <a href="http://www.atguigu.com">
+                        <img src="img/logo.png">
+                    </a>
+                </h1>
+            </div>
+            <div class="head-bottom"></div>
+        </div>       
+    </div>
+</body>
+<script type="text/javascript">
+    window.onload = function(){
+        // 禁止默认事件(因为click延迟300毫秒，会造成事件点透)
+        document.addEventListener('touchstart',function(ev){
+            ev = ev || event
+            ev.preventDefault();
+        })
+
+        // 使用rem适配
+        ;(function(){
+            var styleNode = document.createElement('style');
+            var w = document.documentElement.clientWidth/16;
+            styleNode.innerHTML = 'html{font-size:' + w + 'px!important}';
+            document.head.appendChild(styleNode);
+        })()
+    }
+</script>
+</html>
