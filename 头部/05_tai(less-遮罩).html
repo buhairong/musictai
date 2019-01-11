@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
     <title>Title</title>
-    <link rel="stylesheet" href="css/tai.css">
+    <link rel="stylesheet" href="../css/tai.css">
 </head>
 <body>
     <div id="wrap">
@@ -45,7 +45,6 @@
         </div>       
     </div>
 </body>
-<script src="js/tools.js"></script>
 <script type="text/javascript">
     window.onload = function(){
         // 禁止默认事件(因为click延迟300毫秒，会造成事件点透)
@@ -61,56 +60,6 @@
             styleNode.innerHTML = 'html{font-size:' + w + 'px!important}';
             document.head.appendChild(styleNode);
         })()
-
-        changeFocus();
-        function changeFocus(){
-            var inputText = document.querySelector("#wrap .head .head-bottom form input[type='text']");
-            inputText.addEventListener("touchstart",function(ev){
-                ev = ev || event;
-                this.focus();
-                ev.stopPropagation();
-                ev.preventDefault();
-            })
-
-            document.addEventListener("touchstart",function(){
-                inputText.blur();
-            })
-        }
-
-        CMCFMenuBtn();
-        function CMCFMenuBtn(){
-            var menuBtn = document.querySelector(".menuBtn");
-            var mask = document.querySelector(".mask");
-            var isXX = false;
-            menuBtn.addEventListener("touchstart",function(ev){
-                ev = ev || event;
-                var touchC = ev.changedTouches[0];
-                if(isXX){
-                    tools.removeClass(this,"active");
-                    mask.style.display = "none";
-                }else{
-                    tools.addClass(this,"active");
-                    mask.style.display = "block";
-                }
-                isXX=!isXX;
-                ev.stopPropagation();
-                ev.preventDefault();
-            })
-
-            document.addEventListener("touchstart",function(v){
-                if(isXX){
-                    tools.removeClass(menuBtn,"active");
-                    mask.style.display = "none";
-                    isXX=!isXX;
-                }
-            })
-
-            mask.addEventListener("touchstart",function(ev){
-                ev = ev || event;
-                ev.stopPropagation();
-                ev.preventDefault();
-            })
-        }
     }
 </script>
 </html>
