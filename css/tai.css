@@ -96,17 +96,23 @@ button {
 .damu-nav-drag-wrapper .list > li {
   height: 1.91111111rem;
   line-height: 1.91111111rem;
-  padding: 0 0.56296296rem;
   font-size: 1rem;
   display: inline-block;
+  /*&.active{
+        background:#690;
+        a{
+          color:#fff;
+        }
+      }*/
 }
 .damu-nav-drag-wrapper .list > li a {
+  display: block;
+  padding: 0 0.56296296rem;
+  height: 100%;
   color: #020202;
 }
-.damu-nav-drag-wrapper .list > li.active {
+.damu-nav-drag-wrapper .list > li a.active {
   background: #690;
-}
-.damu-nav-drag-wrapper .list > li.active a {
   color: #fff;
 }
 #wrap {

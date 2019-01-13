@@ -94,12 +94,27 @@
 					 * 	3.拿到手指move的实时距离
 					 * 	4.将手指移动的距离加给元素
 					 * */
+					/*
+					* 防抖动
+					*
+					* 1.判断用户首次滑屏的方向
+					* 2.如果是X轴
+					* 		以后不管用户怎么滑都会抖动
+				* 	  3.如果是Y轴
+				* 	  		以后不管用户怎么滑都不会抖动
+					* */
 					var index =0;
 					//手指一开始的位置
 					var startX = 0;
+					var startY = 0;
 					//元素一开始的位置
 					var elementX = 0;
+					var elementY = 0;
 					//var translateX =0;
+
+					//首次滑屏的方法
+					var isX = true;
+					var isFirst = true;
 					carouselWrap.addEventListener("touchstart",function(ev){
 						ev=ev||event;
 						var TouchC = ev.changedTouches[0];
@@ -122,30 +137,49 @@
 						
 						
 						startX=TouchC.clientX;
-						//elementX=ulNode.offsetLeft;
-						//elementX=translateX;
+						startY=TouchC.clientY;
+
 						elementX=damu.css(ulNode,"translateX");
-						
+						elementY=damu.css(ulNode,"translateY");
+
 						//清楚定时器
 						clearInterval(timer);
+
+                        isX = true;
+                        isFirst = true;
 					})
 					carouselWrap.addEventListener("touchmove",function(ev){
+						//看门狗 二次以后的防抖动
+						if(!isX){
+							//咬住
+							return;
+						}
 						ev=ev||event;
 						var TouchC = ev.changedTouches[0];
 						var nowX = TouchC.clientX;
+						var nowY = TouchC.clientY;
 					    var disX = nowX - startX;
-					    
-						//ulNode.style.left = elementX+disX+"px";
-						
-						/*translateX = elementX+disX;
-						ulNode.style.transform = 'translateX('+translateX+'px)';*/
+					    var disY = nowY - startY;
+
+					    //首次判断用户的滑动方向
+					    if(isFirst){
+					    	isFirst = false;
+					    	//判断用户的滑动方法
+							//x --> 放行
+							//y --> 首次狠狠的咬住 并且告诉兄弟 下次也给我咬住
+                            if(Math.abs(disY) > Math.abs(disX)){
+                                //在Y轴上滑动
+                                isX = false;
+                                //首次防抖动
+                                return;
+                            }
+						}
+
 						damu.css(ulNode,"translateX",elementX+disX);
 					})
 					carouselWrap.addEventListener("touchend",function(ev){
 						ev=ev||event;
-						//index抽象了ul的实时位置
-						//var index = ulNode.offsetLeft/document.documentElement.clientWidth;
-						//var index = translateX/document.documentElement.clientWidth;
+
 					    index = damu.css(ulNode,"translateX")/document.documentElement.clientWidth;
 						index = Math.round(index);
 						
@@ -159,9 +193,7 @@
 						xiaoyuandian(index);
 						
 						ulNode.style.transition=".5s transform";
-						//ulNode.style.left = index*(document.documentElement.clientWidth)+"px";
-						/*translateX=index*(document.documentElement.clientWidth);
-						ulNode.style.transform ='translateX('+translateX+'px)';*/
+
 						damu.css(ulNode,"translateX",index*(document.documentElement.clientWidth));
 						
 						//开启自动轮播
