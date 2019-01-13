@@ -205,4 +205,107 @@
 					}
 				}
 			}
+	w.damu.dragNav=function(){
+        // 滑屏区域
+        var wrap = document.querySelector(".damu-nav-drag-wrapper");
+        //滑屏元素
+        var item = document.querySelector(".damu-nav-drag-wrapper .list");
+
+        //元素一开始的位置 手指一开始的位置
+        var startX = 0;
+        var elementX = 0;
+        var minX = wrap.clientWidth - item.offsetWidth;
+        // 快速滑屏的必要参数
+        var lastTime = 0;
+        var nowTime = 0;
+        var lastPoint = 0;
+        var nowPoint = 0;
+        var timeDis = 1;
+        var pointDis = 0;
+        wrap.addEventListener("touchstart",function(ev){
+            ev = ev || event;
+            var touchC = ev.changedTouches[0];
+            startX = touchC.clientX;
+            elementX = damu.css(item,"translateX");
+            item.style.transition="none";
+
+            lastTime = new Date().getTime();
+            lastPoint = touchC.clientX;
+
+            // 清除速度的残留
+            pointDis = 0;
+            item.handMove = false;
+        })
+
+        wrap.addEventListener("touchmove",function(ev){
+            ev = ev || event;
+            var touchC = ev.changedTouches[0];
+            var nowX = touchC.clientX;
+            var disX = nowX - startX;
+            var translateX = elementX + disX;
+
+
+            nowTime = new Date().getTime();
+            nowPoint = touchC.clientX;
+            timeDis = nowTime - lastTime;
+            pointDis = nowPoint - lastPoint;
+            lastTime = nowTime;
+            lastPoint = nowPoint;
+
+            /*
+                橡皮筋效果
+                在move的过程中，每一次touchmove真正的有效距离慢慢变小，元素的滑动距离还是在变大
+                disX:整个move过程的实际距离
+                pointDis:整个手指touchmove真正的有效距离
+                translateX = damu.css(item,"translateX") + pointDis*scale;
+
+            */
+            if(translateX > 0){
+                item.handMove = true;
+                var scale = document.documentElement.clientWidth/((document.documentElement.clientWidth + translateX)*1.5);
+                translateX = damu.css(item,"translateX") + pointDis*scale;
+            }else if(translateX < minX){
+                item.handMove = true;
+                var over = minX - translateX;
+                var scale = document.documentElement.clientWidth/((document.documentElement.clientWidth + over)*1.5);
+                translateX = damu.css(item,"translateX") + pointDis*scale;
+            }
+            damu.css(item,"translateX",translateX);
+        })
+
+        wrap.addEventListener("touchend",function(ev){
+            var translateX = damu.css(item,"translateX");
+            if(!item.handMove){
+                // 速度越大 位移越远
+                var speed = pointDis/timeDis;
+                speed = Math.abs(speed) < 0.5 ? 0 : speed;
+                var targetX =  translateX + speed*200;
+
+                var time = Math.abs(speed)*0.2;
+                time = time < 0.8 ? 0.8 : time;
+                time = time > 2 ? 2 : time;
+                // 快速滑屏的橡皮筋效果
+                var bsr = "";
+                if(targetX > 0){
+                    targetX = 0;
+                    bsr = "cubic-bezier(.26,1.51,.68,1.54) ";
+                }else if(targetX < minX){
+                    targetX = minX;
+                    bsr = "cubic-bezier(.26,1.51,.68,1.54) ";
+                }
+                item.style.transition=time + "s "+bsr+" transform";
+                damu.css(item,"translateX",targetX);
+            }else{
+                // 手动橡皮筋效果
+                item.style.transition="1s transform";
+                if(translateX > 0){
+                    translateX = 0;
+                    damu.css(item,"translateX",translateX);
+                }else if(translateX < minX){
+                    translateX = minX;
+                    damu.css(item,"translateX",translateX);
+                }
+            }
+        })
+	}
 })(window)
