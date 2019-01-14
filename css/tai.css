@@ -269,7 +269,8 @@ button {
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 #wrap .content .tap-wrap {
   overflow: hidden;
@@ -364,4 +365,5 @@ button {
   background: url(../img/loading.gif) no-repeat;
   background-position: center;
   height: 10rem;
+  opacity: 0;
 }
