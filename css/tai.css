@@ -115,6 +115,18 @@ button {
   background: #690;
   color: #fff;
 }
+.clearfix,
+#wrap .content .tap-wrap .tap-content,
+#wrap .content .tap-wrap .tap-content ul {
+  *zoom: 1;
+}
+.clearfix:after,
+#wrap .content .tap-wrap .tap-content:after,
+#wrap .content .tap-wrap .tap-content ul:after {
+  content: "";
+  display: block;
+  clear: both;
+}
 #wrap {
   position: relative;
   font-size: 0.23703704rem;
@@ -251,10 +263,105 @@ button {
   color: #fff;
 }
 #wrap .content {
-  background: pink;
+  background: #eee;
   position: absolute;
   top: 4rem;
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: auto;
+}
+#wrap .content .tap-wrap {
+  overflow: hidden;
+  width: 15.4962963rem;
+  background: #fff;
+  margin: 0 auto;
+}
+#wrap .content .tap-wrap .tap-head {
+  height: 2rem;
+  line-height: 2rem;
+}
+#wrap .content .tap-wrap .tap-head h2 {
+  float: left;
+  font-size: 1rem;
+}
+#wrap .content .tap-wrap .tap-head span {
+  float: right;
+  font-size: 0.8rem;
+}
+#wrap .content .tap-wrap .tap-nav {
+  position: relative;
+  height: 1.55555556rem;
+  line-height: 1.55555556rem;
+}
+#wrap .content .tap-wrap .tap-nav a {
+  float: left;
+  height: 1.55555556rem;
+  width: 1.77777778rem;
+  font-size: 0.65185185rem;
+  text-align: center;
+  color: #6b6b6b;
+}
+#wrap .content .tap-wrap .tap-nav .smallG {
+  position: absolute;
+  left: 0;
+  bottom: 0.14814815rem;
+  width: 1.77777778rem;
+  height: 0.13333333rem;
+  background: #6f900d;
+}
+#wrap .content .tap-wrap .tap-content {
+  width: 300%;
+}
+#wrap .content .tap-wrap .tap-content ul {
+  float: left;
+  width: 33.33333333%;
+}
+#wrap .content .tap-wrap .tap-content ul li {
+  float: left;
+  box-sizing: border-box;
+  width: 7.4962963rem;
+  margin: 0.11851852rem;
+  padding: 0.07407407rem;
+  font-size: 0.59259259rem;
+  background: #efefef;
+  color: #000;
+  overflow: hidden;
+}
+#wrap .content .tap-wrap .tap-content ul li a img {
+  width: 100%;
+}
+#wrap .content .tap-wrap .tap-content ul li a span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #605e5e;
+}
+#wrap .content .tap-wrap .tap-content ul li .tap-discuss .left {
+  float: left;
+  margin-right: 0.44444444rem;
+  vertical-align: middle;
+}
+#wrap .content .tap-wrap .tap-content ul li .tap-discuss .left span:nth-child(1) {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: url(../img/ice.png) no-repeat;
+}
+#wrap .content .tap-wrap .tap-content ul li .tap-discuss .right {
+  float: left;
+  vertical-align: middle;
+}
+#wrap .content .tap-wrap .tap-content ul li .tap-discuss .right span:nth-child(1) {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: url(../img/ice.png) no-repeat;
+  background-position: 0 -0.8rem;
+}
+#wrap .content .tap-wrap .tap-content .tap-loading {
+  background: url(../img/loading.gif) no-repeat;
+  background-position: center;
+  height: 10rem;
 }
