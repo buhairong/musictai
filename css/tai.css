@@ -298,7 +298,7 @@ button {
 #wrap .content .tap-wrap .tap-nav a {
   float: left;
   height: 1.55555556rem;
-  width: 1.77777778rem;
+  margin-right: 0.2962963rem;
   font-size: 0.65185185rem;
   text-align: center;
   color: #6b6b6b;
@@ -307,9 +307,9 @@ button {
   position: absolute;
   left: 0;
   bottom: 0.14814815rem;
-  width: 1.77777778rem;
   height: 0.13333333rem;
   background: #6f900d;
+  transition: 1s transform,1s width;
 }
 #wrap .content .tap-wrap .tap-content {
   width: 300%;

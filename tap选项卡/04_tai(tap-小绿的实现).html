@@ -319,6 +319,35 @@
         })()
 
         //tab选项卡
+        /*
+        * 一次move过程:
+        *       touchstart事件触发一次
+        *       touchmove事件触发N次
+        *       touchend事件触发一次
+        *
+    *       1.基本的滑屏逻辑（防抖动）
+    *       2.结合tap选项卡的实际需求 滑屏
+    *           --- 手指一次move过程没有过1/2
+    *                   我们不关心touchmove的触发次数
+    *           --- 手指一次move过程过1/2
+    *                   0
+    *                   -2w
+    *                   touchmove的触发次数必须只有一次
+*           3.一个逻辑只被触发一次
+*               定时器
+*                   控制一个逻辑在一定时间内被触发一次
+*               立flag
+*                   控制一个逻辑在一类操作过程中被触发一次
+        *
+        * */
+
+        /*
+        * 超过1/2
+        *  1.一开始loading图是隐藏的，loading图需要出现
+        *  2.发送请求 处理请求 完成数据的渲染
+        *       必须动画（content去0或者-2w位置）完成之后，再去进行这一系列的逻辑
+        *                                 --- content要回到-w的位置
+        * */
         tap();
         function tap(){
             var wrap = document.querySelector(".tap-wrap");
@@ -328,7 +357,13 @@
                 move(contentNodes[i]);
             }
             function move(content){
+                //抽象小绿的下标
+                var now = 0;
+                var smallG = content.parentNode.querySelector(".tap-nav .smallG");
+                var aNodes = content.parentNode.querySelectorAll(".tap-nav a");
+                var loadings = content.querySelectorAll(".tap-loading");
                 damu.css(content,"translateX",-w);
+                smallG.style.width = aNodes[0].offsetWidth+"px";
 
                 //滑屏逻辑 content既是滑屏区域又是滑屏元素
                 var startPoint = {x:0,y:0};
@@ -348,7 +383,6 @@
                     elementPoint.y=damu.css(content,"translateY");
                     isX=true;
                     isFirst=true;
-                    isOver=false;
                     content.style.transition = "none";
                 })
 
@@ -417,7 +451,46 @@
                         content.addEventListener("webkitTransitionEnd",endFn);
 
                         function endFn(){
+                            /*
+                            * 循环定时器                  回调函数的头部第一行清定时器
+                            * DOM2 绑定 transitionend事件 回调函数的头部第一行解绑事件
+                            * */
+                            content.removeEventListener("transitionend",endFn);
+                            content.removeEventListener("webkitTransitionEnd",endFn);
+                            content.style.transition = "none";
+                            /*
+                            * 超过1/2
+                            *  1.一开始loading图是隐藏的，loading图需要出现
+                            *  2.发送请求 处理请求 完成数据的渲染
+                            *       必须动画（content去0或者-2w位置）完成之后，再去进行这一系列的逻辑
+                            *                                 --- content要回到-w的位置
+                            * */
 
+                            for(var i=0;i<loadings.length;i++){
+                                loadings[i].style.opacity=1;
+                            }
+                            //对now进行控制
+                            //往右滑 --   往左滑++
+                            disX>0?now--:now++;
+                            if(now<0){
+                                now = aNodes.length-1;
+                            }else if(now>aNodes.length-1){
+                                now=0;
+                            }
+                            damu.css(smallG,"translateX",aNodes[now].offsetLeft);
+                            if(aNodes[now].offsetWidth != smallG.offsetWidth){
+                                smallG.style.width=aNodes[now].offsetWidth + "px";
+                            }
+
+                            //发ajax请求 去服务端拿数据
+                            setTimeout(function(){
+                                //成功 content要回到-w的位置 loading图隐藏
+                                for(var i=0;i<loadings.length;i++){
+                                    loadings[i].style.opacity=0;
+                                }
+                                damu.css(content,"translateX",-w);
+                                isOver=false;
+                            },2000)
                         }
                     }
                 }
